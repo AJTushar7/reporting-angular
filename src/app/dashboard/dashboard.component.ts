@@ -7,11 +7,13 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { ProgressBarModule } from 'primeng/progressbar';
 import { TooltipModule } from 'primeng/tooltip';
+import { DropdownModule } from 'primeng/dropdown';
+import { FormsModule } from '@angular/forms';
 import { KpiCardComponent } from './components/kpi-card/kpi-card.component';
 import { AlertsTickerComponent } from './components/alerts-ticker/alerts-ticker.component';
 import { ChannelOverviewComponent } from './components/channel-overview/channel-overview.component';
 import { CampaignTableComponent } from './components/campaign-table/campaign-table.component';
-import { BspComparisonComponent } from './components/bsp-comparison/bsp-comparison.component';
+import { BSPComparisonComponent } from './components/bsp-comparison/bsp-comparison.component';
 import { RealTimeMonitoringComponent } from './components/real-time-monitoring/real-time-monitoring.component';
 import { HeatmapSectionComponent } from './components/heatmap-section/heatmap-section.component';
 import { BudgetPerformanceComponent } from './components/budget-performance/budget-performance.component';
@@ -25,6 +27,7 @@ import { AlertItem } from '../models/campaign.interface';
   standalone: true,
   imports: [
     CommonModule,
+    FormsModule,
     CardModule,
     ButtonModule,
     ChipModule,
@@ -32,11 +35,12 @@ import { AlertItem } from '../models/campaign.interface';
     TagModule,
     ProgressBarModule,
     TooltipModule,
+    DropdownModule,
     KpiCardComponent,
     AlertsTickerComponent,
     ChannelOverviewComponent,
     CampaignTableComponent,
-    BspComparisonComponent,
+    BSPComparisonComponent,
     RealTimeMonitoringComponent,
     HeatmapSectionComponent,
     BudgetPerformanceComponent,
