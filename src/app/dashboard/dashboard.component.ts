@@ -17,13 +17,7 @@ import { CampaignTableComponent } from './components/campaign-table/campaign-tab
 import { CostOptimizationComponent } from './components/cost-optimization/cost-optimization.component';
 import { FestivalTimelineComponent } from './components/festival-timeline/festival-timeline.component';
 import { OrchestrationAnalysisComponent } from './components/orchestration-analysis/orchestration-analysis.component';
-
-interface AlertItem {
-  id: string;
-  text: string;
-  type: 'info' | 'success' | 'warning' | 'error';
-  time?: string;
-}
+import { AlertItem } from '../models/campaign.interface';
 
 @Component({
   selector: 'app-dashboard',

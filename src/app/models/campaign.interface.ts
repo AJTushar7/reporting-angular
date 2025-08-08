@@ -26,7 +26,7 @@ export interface AlertItem {
   id: string;
   text: string;
   time?: string;
-  type?: 'info' | 'warning' | 'success';
+  type?: 'info' | 'warning' | 'success' | 'error';
 }
 
 export interface ChannelData {
