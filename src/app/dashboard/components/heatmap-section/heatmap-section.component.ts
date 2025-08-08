@@ -167,3 +167,105 @@ export class HeatmapSectionComponent {
     return `${day} ${this.formatHour(hour)}: ${value}% engagement`;
   }
 }
+import { Component } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { MatCardModule } from '@angular/material/card';
+import { MatIconModule } from '@angular/material/icon';
+
+@Component({
+  selector: 'app-heatmap-section',
+  standalone: true,
+  imports: [CommonModule, MatCardModule, MatIconModule],
+  template: `
+    <mat-card class="h-full">
+      <mat-card-header class="pb-3">
+        <mat-card-title class="flex items-center gap-2">
+          <mat-icon class="text-orange-500">whatshot</mat-icon>
+          Peak Engagement Heatmap
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div class="grid gap-4 mb-4">
+          <div class="grid grid-cols-2 gap-4">
+            <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <h4 class="font-semibold">WhatsApp</h4>
+              <div class="text-2xl font-bold text-blue-600">68.5%</div>
+              <div class="text-sm text-muted-foreground">Peak: Tue at 10 AM</div>
+            </div>
+            <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
+              <h4 class="font-semibold">SMS</h4>
+              <div class="text-2xl font-bold text-green-600">54.2%</div>
+              <div class="text-sm text-muted-foreground">Peak: Wed at 11 AM</div>
+            </div>
+          </div>
+        </div>
+        
+        <h4 class="font-semibold mb-3">Engagement Heatmap by Time</h4>
+        <div class="space-y-2">
+          <div class="flex items-center justify-between text-sm">
+            <span class="w-12">12AM</span>
+            <span class="w-12">6AM</span>
+            <span class="w-12">12PM</span>
+            <span class="w-12">6PM</span>
+          </div>
+          <div class="space-y-1">
+            <div class="flex items-center gap-2">
+              <span class="w-8 text-sm">Sun</span>
+              <div class="flex-1 h-6 bg-gradient-to-r from-yellow-200 via-orange-300 to-orange-400 rounded"></div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-8 text-sm">Mon</span>
+              <div class="flex-1 h-6 bg-gradient-to-r from-yellow-200 via-orange-400 to-red-400 rounded"></div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-8 text-sm">Tue</span>
+              <div class="flex-1 h-6 bg-gradient-to-r from-yellow-200 via-orange-400 to-red-500 rounded"></div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-8 text-sm">Wed</span>
+              <div class="flex-1 h-6 bg-gradient-to-r from-yellow-200 via-orange-400 to-red-400 rounded"></div>
+            </div>
+            <div class="flex items-center gap-2">
+              <span class="w-8 text-sm">Thu</span>
+              <div class="flex-1 h-6 bg-gradient-to-r from-yellow-200 via-orange-300 to-orange-400 rounded"></div>
+            </div>
+          </div>
+          <div class="flex items-center justify-between text-xs mt-2">
+            <span class="flex items-center gap-1">
+              <div class="w-3 h-3 bg-yellow-200 rounded"></div>
+              Low
+            </span>
+            <span class="flex items-center gap-1">
+              <div class="w-3 h-3 bg-orange-400 rounded"></div>
+              Med
+            </span>
+            <span class="flex items-center gap-1">
+              <div class="w-3 h-3 bg-red-500 rounded"></div>
+              High
+            </span>
+          </div>
+        </div>
+
+        <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
+          <div class="flex items-center gap-2 text-sm">
+            <mat-icon class="text-blue-500 text-sm">info</mat-icon>
+            <span class="font-medium">Optimal Timing</span>
+          </div>
+          <div class="text-sm mt-1">
+            <span class="text-blue-600">Best:</span> Tue Thu 10-11 AM show 35% higher engage
+            <br>
+            <span class="text-red-600">Avoid:</span> 8-10 PM show 60% lower conversion rates
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  `,
+  styles: [`
+    .text-orange-500 { color: #f97316; }
+    .text-blue-500 { color: #3b82f6; }
+    .text-blue-600 { color: #2563eb; }
+    .text-green-600 { color: #059669; }
+    .text-red-600 { color: #dc2626; }
+  `]
+})
+export class HeatmapSectionComponent {}
