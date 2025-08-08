@@ -1,19 +1,20 @@
-
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatButtonModule } from '@angular/material/button';
-import { MatCardModule } from '@angular/material/card';
-import { MatSelectModule } from '@angular/material/select';
-import { MatDialogModule } from '@angular/material/dialog';
-import { MatBadgeModule } from '@angular/material/badge';
-import { MatIconModule } from '@angular/material/icon';
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { ChipModule } from 'primeng/chip';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { ProgressBarModule } from 'primeng/progressbar';
+import { TooltipModule } from 'primeng/tooltip';
 import { KpiCardComponent } from './components/kpi-card/kpi-card.component';
 import { AlertsTickerComponent } from './components/alerts-ticker/alerts-ticker.component';
 import { ChannelOverviewComponent } from './components/channel-overview/channel-overview.component';
-import { BSPComparisonComponent } from './components/bsp-comparison/bsp-comparison.component';
-import { BudgetPerformanceComponent } from './components/budget-performance/budget-performance.component';
-import { RealTimeMonitoringComponent } from './components/real-time-monitoring/real-time-monitoring.component';
 import { CampaignTableComponent } from './components/campaign-table/campaign-table.component';
+import { BspComparisonComponent } from './components/bsp-comparison/bsp-comparison.component';
+import { RealTimeMonitoringComponent } from './components/real-time-monitoring/real-time-monitoring.component';
+import { HeatmapSectionComponent } from './components/heatmap-section/heatmap-section.component';
+import { BudgetPerformanceComponent } from './components/budget-performance/budget-performance.component';
 import { CostOptimizationComponent } from './components/cost-optimization/cost-optimization.component';
 import { FestivalTimelineComponent } from './components/festival-timeline/festival-timeline.component';
 import { OrchestrationAnalysisComponent } from './components/orchestration-analysis/orchestration-analysis.component';
@@ -24,19 +25,21 @@ import { AlertItem } from '../models/campaign.interface';
   standalone: true,
   imports: [
     CommonModule,
-    MatButtonModule,
-    MatCardModule,
-    MatSelectModule,
-    MatDialogModule,
-    MatBadgeModule,
-    MatIconModule,
+    CardModule,
+    ButtonModule,
+    ChipModule,
+    TableModule,
+    TagModule,
+    ProgressBarModule,
+    TooltipModule,
     KpiCardComponent,
     AlertsTickerComponent,
     ChannelOverviewComponent,
-    BSPComparisonComponent,
-    BudgetPerformanceComponent,
-    RealTimeMonitoringComponent,
     CampaignTableComponent,
+    BspComparisonComponent,
+    RealTimeMonitoringComponent,
+    HeatmapSectionComponent,
+    BudgetPerformanceComponent,
     CostOptimizationComponent,
     FestivalTimelineComponent,
     OrchestrationAnalysisComponent
@@ -56,20 +59,9 @@ import { AlertItem } from '../models/campaign.interface';
           <p class="text-sm text-muted-foreground mt-1">Live Updates Active</p>
         </div>
         <div class="flex items-center gap-3">
-          <button mat-stroked-button>
-            <mat-icon>calendar_today</mat-icon>
-            Calendar
-          </button>
-          <mat-select value="all-channels" class="min-w-[150px]">
-            <mat-option value="all-channels">All Channels</mat-option>
-            <mat-option value="whatsapp">WhatsApp</mat-option>
-            <mat-option value="sms">SMS</mat-option>
-            <mat-option value="email">Email</mat-option>
-          </mat-select>
-          <button mat-raised-button color="primary">
-            <mat-icon>add</mat-icon>
-            New Campaign
-          </button>
+          <button pButton pRipple type="button" label="Calendar" icon="pi pi-calendar" class="p-button-outlined"></button>
+          <p-dropdown [options]="channelOptions" [(ngModel)]="selectedChannel" placeholder="All Channels" class="min-w-[150px]"></p-dropdown>
+          <button pButton type="button" label="New Campaign" icon="pi pi-plus"></button>
         </div>
       </div>
 
@@ -115,50 +107,50 @@ import { AlertItem } from '../models/campaign.interface';
       </div>
 
       <!-- AI-Powered Optimization Insights -->
-      <mat-card>
-        <mat-card-header class="pb-3">
-          <mat-card-title class="flex items-center gap-2">
-            <mat-icon class="text-blue-500">psychology</mat-icon>
-            AI-Powered Optimization Insights
-          </mat-card-title>
-          <mat-card-subtitle>Smart recommendations to maximize campaign performance</mat-card-subtitle>
-        </mat-card-header>
-        <mat-card-content>
+      <p-card>
+        <ng-template pTemplate="header">
+          <div class="flex items-center gap-2 pb-3">
+            <span class="text-blue-500 pi pi-psychology"></span>
+            <h5 class="font-semibold text-lg">AI-Powered Optimization Insights</h5>
+          </div>
+          <p class="text-sm text-muted-foreground">Smart recommendations to maximize campaign performance</p>
+        </ng-template>
+        <ng-template pTemplate="content">
           <div class="grid gap-4 md:grid-cols-3">
             <!-- Channel Mix Optimization -->
             <div class="p-4 border rounded-lg">
               <div class="flex items-center gap-2 mb-3">
-                <mat-icon class="text-blue-500">analytics</mat-icon>
+                <span class="text-blue-500 pi pi-chart-line"></span>
                 <span class="text-sm font-medium">94% confidence</span>
               </div>
               <h4 class="font-semibold mb-2">Channel Mix Optimization</h4>
               <p class="text-sm text-muted-foreground mb-3">Switch 30% SMS traffic to WhatsApp</p>
               <div class="text-green-600 font-semibold mb-3">32% cost reduction</div>
-              <button mat-stroked-button class="w-full">Apply Insight</button>
+              <p-button label="Apply Insight" styleClass="p-button-outlined w-full"></p-button>
             </div>
 
             <!-- Timing Optimization -->
             <div class="p-4 border rounded-lg">
               <div class="flex items-center gap-2 mb-3">
-                <mat-icon class="text-orange-500">schedule</mat-icon>
+                <span class="text-orange-500 pi pi-clock"></span>
                 <span class="text-sm font-medium">89% confidence</span>
               </div>
               <h4 class="font-semibold mb-2">Timing Optimization</h4>
               <p class="text-sm text-muted-foreground mb-3">Send campaigns during peak hours (6-8 PM)</p>
               <div class="text-green-600 font-semibold mb-3">28% engagement boost</div>
-              <button mat-stroked-button class="w-full">Apply Insight</button>
+              <p-button label="Apply Insight" styleClass="p-button-outlined w-full"></p-button>
             </div>
 
             <!-- Audience Segmentation -->
             <div class="p-4 border rounded-lg">
               <div class="flex items-center gap-2 mb-3">
-                <mat-icon class="text-purple-500">people</mat-icon>
+                <span class="text-purple-500 pi pi-users"></span>
                 <span class="text-sm font-medium">91% confidence</span>
               </div>
               <h4 class="font-semibold mb-2">Audience Segmentation</h4>
               <p class="text-sm text-muted-foreground mb-3">Create talent-based customer segments</p>
               <div class="text-green-600 font-semibold mb-3">45% conversion uplift</div>
-              <button mat-stroked-button class="w-full">Apply Insight</button>
+              <p-button label="Apply Insight" styleClass="p-button-outlined w-full"></p-button>
             </div>
           </div>
 
@@ -166,55 +158,55 @@ import { AlertItem } from '../models/campaign.interface';
             <!-- Cross-Channel Strategy -->
             <div class="p-4 border rounded-lg">
               <div class="flex items-center gap-2 mb-3">
-                <mat-icon class="text-indigo-500">trending_up</mat-icon>
+                <span class="text-indigo-500 pi pi-arrow-growth"></span>
                 <span class="text-sm font-medium">87% confidence</span>
               </div>
               <h4 class="font-semibold mb-2">Cross-Channel Strategy</h4>
               <p class="text-sm text-muted-foreground mb-3">Use WhatsApp for warm leads; Email for nurturing</p>
               <div class="text-green-600 font-semibold mb-3">38% ROI improvement</div>
-              <button mat-stroked-button class="w-full">Apply Insight</button>
+              <p-button label="Apply Insight" styleClass="p-button-outlined w-full"></p-button>
             </div>
 
             <!-- Creative Optimization -->
             <div class="p-4 border rounded-lg">
               <div class="flex items-center gap-2 mb-3">
-                <mat-icon class="text-yellow-500">lightbulb</mat-icon>
+                <span class="text-yellow-500 pi pi-lightbulb"></span>
                 <span class="text-sm font-medium">82% confidence</span>
               </div>
               <h4 class="font-semibold mb-2">Creative Optimization</h4>
               <p class="text-sm text-muted-foreground mb-3">A/B test RCS rich media vs standard messages</p>
               <div class="text-green-600 font-semibold mb-3">52% CTR increase</div>
-              <button mat-stroked-button class="w-full">Apply Insight</button>
+              <p-button label="Apply Insight" styleClass="p-button-outlined w-full"></p-button>
             </div>
 
             <!-- Inactive Customer Revival -->
             <div class="p-4 border rounded-lg">
               <div class="flex items-center gap-2 mb-3">
-                <mat-icon class="text-teal-500">refresh</mat-icon>
+                <span class="text-teal-500 pi pi-refresh"></span>
                 <span class="text-sm font-medium">76% confidence</span>
               </div>
               <h4 class="font-semibold mb-2">Inactive Customer Revival</h4>
               <p class="text-sm text-muted-foreground mb-3">Re-engage 2,847 dormant customers with personalized offers</p>
               <div class="text-green-600 font-semibold mb-3">₹1.2L potential revenue</div>
-              <button mat-stroked-button class="w-full">Apply Insight</button>
+              <p-button label="Apply Insight" styleClass="p-button-outlined w-full"></p-button>
             </div>
           </div>
-        </mat-card-content>
-      </mat-card>
+        </ng-template>
+      </p-card>
 
       <!-- Channel Performance -->
       <div class="grid gap-6 lg:grid-cols-2">
         <app-channel-overview></app-channel-overview>
         <div>
           <!-- Peak Engagement Heatmap -->
-          <mat-card class="h-full">
-            <mat-card-header class="pb-3">
-              <mat-card-title class="flex items-center gap-2">
-                <mat-icon class="text-orange-500">whatshot</mat-icon>
-                Peak Engagement Heatmap
-              </mat-card-title>
-            </mat-card-header>
-            <mat-card-content>
+          <p-card class="h-full">
+            <ng-template pTemplate="header">
+              <div class="flex items-center gap-2 pb-3">
+                <span class="text-orange-500 pi pi-fire"></span>
+                <h5 class="font-semibold text-lg">Peak Engagement Heatmap</h5>
+              </div>
+            </ng-template>
+            <ng-template pTemplate="content">
               <div class="grid gap-4 mb-4">
                 <div class="grid grid-cols-2 gap-4">
                   <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
@@ -278,7 +270,7 @@ import { AlertItem } from '../models/campaign.interface';
 
               <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
                 <div class="flex items-center gap-2 text-sm">
-                  <mat-icon class="text-blue-500 text-sm">info</mat-icon>
+                  <span class="text-blue-500 pi pi-info-circle text-sm"></span>
                   <span class="font-medium">Optimal Timing</span>
                 </div>
                 <div class="text-sm mt-1">
@@ -287,8 +279,8 @@ import { AlertItem } from '../models/campaign.interface';
                   <span class="text-red-600">Avoid:</span> 8-10 PM show 60% lower conversion rates
                 </div>
               </div>
-            </mat-card-content>
-          </mat-card>
+            </ng-template>
+          </p-card>
         </div>
       </div>
 
@@ -302,44 +294,203 @@ import { AlertItem } from '../models/campaign.interface';
       <app-orchestration-analysis></app-orchestration-analysis>
 
       <!-- Footer -->
-      <mat-card>
-        <mat-card-content class="py-4 text-sm text-muted-foreground">
-          Tips: Use orchestration to set WhatsApp as primary with SMS fallback
-          to reduce cost per conversion by up to 18%.
-        </mat-card-content>
-      </mat-card>
+      <p-card>
+        <ng-template pTemplate="content">
+          <div class="py-4 text-sm text-muted-foreground">
+            Tips: Use orchestration to set WhatsApp as primary with SMS fallback
+            to reduce cost per conversion by up to 18%.
+          </div>
+        </ng-template>
+      </p-card>
     </div>
   `,
   styles: [`
-    .text-blue-500 { color: #3b82f6; }
+    .dashboard-container {
+      padding: 1.5rem; /* p-6 */
+      min-height: 100vh;
+      background-color: #f4f4f5; /* Default background */
+      gap: 1.5rem; /* space-y-6 */
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dashboard-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem; /* mb-6 */
+    }
+
+    .dashboard-title {
+      font-size: 1.5rem; /* text-2xl */
+      font-weight: bold; /* font-bold */
+      color: #171717; /* foreground */
+    }
+
+    .dashboard-subtitle {
+      font-size: 0.875rem; /* text-sm */
+      color: #52525b; /* muted-foreground */
+      margin-top: 0.5rem; /* mt-2 */
+    }
+
+    .p-dropdown {
+      min-width: 150px;
+    }
+
+    /* Utility classes for Tailwind CSS emulation */
+    .flex { display: flex; }
+    .items-center { align-items: center; }
+    .justify-between { justify-content: space-between; }
+    .gap-2 { gap: 0.5rem; } /* Gap between header elements */
+    .gap-3 { gap: 0.75rem; } /* Gap between header buttons */
+    .gap-4 { gap: 1rem; } /* Gap for KPI cards, etc. */
+    .gap-6 { gap: 1.5rem; } /* Gap for main grid sections */
+    .gap-4 > * { margin-bottom: 1rem; } /* Tailwind's gap for rows */
+    .gap-6 > * { margin-bottom: 1.5rem; } /* Tailwind's gap for rows */
+
+    .text-foreground { color: #171717; } /* Tailwind's foreground */
+    .text-muted-foreground { color: #525252; } /* Tailwind's muted-foreground */
+    .text-sm { font-size: 0.875rem; }
+    .text-lg { font-size: 1.125rem; }
+    .text-2xl { font-size: 1.5rem; }
+    .font-bold { font-weight: bold; }
+    .font-semibold { font-weight: 600; }
+    .font-medium { font-weight: 500; }
+    .bg-background { background-color: #f4f4f5; } /* Tailwind's background */
+    .bg-gray-50 { background-color: #fafafa; }
+    .bg-gray-800 { background-color: #27272a; }
+    .bg-blue-50 { background-color: #eff6ff; }
+    .bg-blue-950\/20 { background-color: rgba(21, 37, 73, 0.2); } /* Tailwind's blue-950/20 */
+    .dark\:bg-gray-800 { background-color: #27272a; } /* Dark mode */
+    .dark\:bg-blue-950\/20 { background-color: rgba(21, 37, 73, 0.2); } /* Dark mode */
+    .border { border-width: 1px; border-color: #e5e5e5; border-radius: 0.5rem; padding: 1rem; } /* Tail-tailored border style */
+    .rounded-lg { border-radius: 0.5rem; }
+    .grid { display: grid; }
+    .grid-cols-1 { grid-template-columns: 1fr; }
+    .grid-cols-2 { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .grid-cols-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .grid-cols-4 { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .lg\:grid-cols-2 { '@media (min-width: 1024px)': { gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }; }
+    .lg\:grid-cols-3 { '@media (min-width: 1024px)': { gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }; }
+    .lg\:grid-cols-4 { '@media (min-width: 1024px)': { gridTemplateColumns: 'repeat(4, minmax(0, 1fr))' }; }
+    .md\:grid-cols-2 { '@media (min-width: 768px)': { gridTemplateColumns: 'repeat(2, minmax(0, 1fr))' }; }
+    .md\:grid-cols-3 { '@media (min-width: 768px)': { gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }; }
+    .xl\:grid-cols-3 { '@media (min-width: 1280px)': { gridTemplateColumns: 'repeat(3, minmax(0, 1fr))' }; }
+    .lg\:col-span-2 { '@media (min-width: 1024px)': { gridColumn: 'span 2 / span 2' }; }
+    .space-y-1 > * { margin-top: 0.25rem; }
+    .space-y-2 > * { margin-top: 0.5rem; }
+    .space-y-6 > * { margin-top: 1.5rem; }
+    .mt-1 { margin-top: 0.25rem; }
+    .mt-2 { margin-top: 0.5rem; }
+    .mt-4 { margin-top: 1rem; }
+    .mt-6 { margin-top: 1.5rem; }
+    .mb-3 { margin-bottom: 0.75rem; }
+    .mb-4 { margin-bottom: 1rem; }
+    .mb-6 { margin-bottom: 1.5rem; }
+    .pb-3 { padding-bottom: 0.75rem; }
+    .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+    .p-3 { padding: 0.75rem; }
+    .p-4 { padding: 1rem; }
+    .p-6 { padding: 1.5rem; }
+    .w-full { width: 100%; }
+    .w-3 { width: 0.75rem; }
+    .w-8 { width: 2rem; }
+    .w-12 { width: 3rem; }
+    .h-6 { height: 1.5rem; }
+    .bg-gradient-to-r { background-image: linear-gradient(to right, var(--tw-gradient-stops)); }
+    .from-yellow-200 { --tw-gradient-from: #fef08a; }
+    .via-orange-300 { --tw-gradient-via: #fdba74; }
+    .to-orange-400 { --tw-gradient-to: #fb923c; }
+    .to-red-400 { --tw-gradient-to: #ef4444; }
+    .to-red-500 { --tw-gradient-to: #ef4444; }
+    .text-green-600 { color: #059669; }
+    .text-red-600 { color: #dc2626; }
+    .text-blue-600 { color: #2563eb; }
     .text-orange-500 { color: #f97316; }
     .text-purple-500 { color: #a855f7; }
     .text-indigo-500 { color: #6366f1; }
     .text-yellow-500 { color: #eab308; }
     .text-teal-500 { color: #14b8a6; }
-    .text-green-600 { color: #059669; }
-    .text-red-600 { color: #dc2626; }
-    .text-blue-600 { color: #2563eb; }
+    .bg-gradient-to-r {
+      background-image: linear-gradient(to right, var(--tw-gradient-from), var(--tw-gradient-to));
+    }
+    .from-yellow-200 { --tw-gradient-from: #fef08a; }
+    .via-orange-300 { --tw-gradient-via: #fdba74; }
+    .to-orange-400 { --tw-gradient-to: #fb923c; }
+    .to-red-400 { --tw-gradient-to: #ef4444; }
+    .to-red-500 { --tw-gradient-to: #ef4444; }
+    .from-yellow-200, .via-orange-300, .to-orange-400, .to-red-400, .to-red-500 {
+      background-repeat: no-repeat;
+    }
+    .p-button-outlined {
+      background-color: transparent;
+      border: 1px solid;
+    }
+    .p-button-secondary {
+      background-color: #606061;
+      border-color: #606061;
+    }
+    .p-button-secondary:hover {
+      background-color: #757576;
+      border-color: #757576;
+    }
+    .p-button.p-button-secondary {
+      color: #ffffff;
+    }
+    .p-dropdown.p-component {
+      min-width: 150px;
+    }
+    /* Specific styles for PrimeNG components if needed */
+    ::ng-deep .p-card .p-card-header {
+      padding-bottom: 0.75rem;
+    }
+    ::ng-deep .p-card .p-card-content {
+      padding: 1rem;
+    }
+    ::ng-deep .p-dropdown .p-dropdown-label {
+      color: #525252; /* muted-foreground */
+    }
+    ::ng-deep .p-buttonset .p-button {
+      margin-right: -1px;
+    }
+    ::ng-deep .p-buttonset .p-button:last-child {
+      margin-right: 0;
+    }
   `]
 })
 export class DashboardComponent {
   alertItems: AlertItem[] = [
     {
       id: '1',
-      text: 'Service Reminder campaign is starting at 3:25 PM',
-      type: 'info',
-      time: 'in 10m',
+      text: 'WhatsApp API rate limit approaching - 85% capacity',
+      type: 'warning',
+      time: '2 min ago'
     },
     {
       id: '2',
-      text: 'Diwali Festival Sale just started execution',
-      type: 'success',
-      time: 'now',
+      text: 'Festival campaign scheduled for tomorrow - 2.3M messages queued',
+      type: 'info',
+      time: '5 min ago'
     },
     {
       id: '3',
-      text: 'RCS pilot paused due to high bounce rate. Review BSP.',
-      type: 'warning',
+      text: 'SMS delivery failed for Airtel - investigating issue',
+      type: 'error',
+      time: '8 min ago'
     },
+    {
+      id: '4',
+      text: 'Cost optimization saved ₹45,000 this week',
+      type: 'success',
+      time: '1 hour ago'
+    }
   ];
+
+  channelOptions = [
+    {label: 'All Channels', value: 'all-channels'},
+    {label: 'WhatsApp', value: 'whatsapp'},
+    {label: 'SMS', value: 'sms'},
+    {label: 'Email', value: 'email'}
+  ];
+  selectedChannel: string = 'all-channels';
 }

@@ -1,122 +1,122 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSelectModule } from '@angular/material/select';
-
-interface HeatmapData {
-  day: string;
-  hour: number;
-  engagement: number;
-  volume: number;
-  cost: number;
-}
+import { CardModule } from 'primeng/card';
+import { ButtonModule } from 'primeng/button';
+import { DropdownModule } from 'primeng/dropdown';
+import { TooltipModule } from 'primeng/tooltip';
 
 @Component({
   selector: 'app-heatmap-section',
   standalone: true,
-  imports: [CommonModule, MatCardModule, MatButtonModule, MatIconModule, MatSelectModule],
+  imports: [CommonModule, CardModule, ButtonModule, DropdownModule, TooltipModule],
   template: `
-    <mat-card>
-      <mat-card-header class="pb-3">
-        <div class="flex items-center justify-between w-full">
-          <mat-card-title class="flex items-center gap-2">
-            <mat-icon class="text-pink-500">grid_view</mat-icon>
-            Engagement Heatmap
-          </mat-card-title>
+    <p-card>
+      <ng-template pTemplate="header">
+        <div class="flex items-center justify-between w-full p-4">
           <div class="flex items-center gap-2">
-            <mat-select value="engagement" class="w-32">
-              <mat-option value="engagement">Engagement</mat-option>
-              <mat-option value="volume">Volume</mat-option>
-              <mat-option value="cost">Cost</mat-option>
-            </mat-select>
-            <button mat-button class="text-sm">
-              <mat-icon>fullscreen</mat-icon>
-            </button>
+            <i class="pi pi-th-large text-pink-500"></i>
+            <span class="font-semibold">Engagement Heatmap</span>
+          </div>
+          <div class="flex items-center gap-2">
+            <p-dropdown [options]="viewOptions" [(ngModel)]="selectedView" 
+                       placeholder="Select View" [style]="{'width': '120px'}">
+            </p-dropdown>
+            <p-button icon="pi pi-external-link" severity="secondary" size="small"></p-button>
           </div>
         </div>
-      </mat-card-header>
-      <mat-card-content>
+      </ng-template>
+
+      <ng-template pTemplate="content">
         <!-- Days header -->
         <div class="grid grid-cols-8 gap-1 mb-2">
-          <div class="text-xs text-center font-medium text-muted-foreground">Time</div>
+          <div class="text-xs text-center font-medium text-gray-500">Time</div>
           <div 
             *ngFor="let day of days" 
-            class="text-xs text-center font-medium text-muted-foreground">
+            class="text-xs text-center font-medium text-gray-500">
             {{day}}
           </div>
         </div>
-        
+
         <!-- Heatmap grid -->
         <div class="space-y-1">
           <div 
             *ngFor="let hour of hours; trackBy: trackByHour" 
             class="grid grid-cols-8 gap-1">
-            
             <!-- Hour label -->
-            <div class="text-xs text-center font-medium text-muted-foreground py-1">
-              {{formatHour(hour)}}
+            <div class="text-xs text-right pr-2 py-1 text-gray-500 font-medium">
+              {{hour}}
             </div>
-            
-            <!-- Day cells -->
+            <!-- Heatmap cells for each day -->
             <div 
               *ngFor="let day of days; trackBy: trackByDay" 
-              class="aspect-square rounded text-xs flex items-center justify-center font-medium cursor-pointer transition-all hover:scale-110"
-              [style.background-color]="getHeatmapColor(day, hour)"
-              [style.color]="getTextColor(day, hour)"
-              [title]="getTooltip(day, hour)">
-              {{getEngagementValue(day, hour)}}
+              class="heatmap-cell"
+              [ngClass]="getHeatmapClass(hour, day)"
+              [pTooltip]="getTooltipText(hour, day)"
+              tooltipPosition="top">
             </div>
           </div>
         </div>
 
         <!-- Legend -->
-        <div class="mt-4 flex items-center justify-between">
-          <div class="flex items-center gap-2">
-            <span class="text-sm text-muted-foreground">Low</span>
+        <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-200">
+          <div class="flex items-center gap-2 text-xs text-gray-500">
+            <span>Less</span>
             <div class="flex gap-1">
-              <div class="w-4 h-4 rounded" style="background-color: #f3f4f6;"></div>
-              <div class="w-4 h-4 rounded" style="background-color: #fbbf24;"></div>
-              <div class="w-4 h-4 rounded" style="background-color: #f97316;"></div>
-              <div class="w-4 h-4 rounded" style="background-color: #dc2626;"></div>
-              <div class="w-4 h-4 rounded" style="background-color: #7c2d12;"></div>
+              <div class="heatmap-cell heatmap-low"></div>
+              <div class="heatmap-cell heatmap-medium"></div>
+              <div class="heatmap-cell heatmap-high"></div>
+              <div class="heatmap-cell heatmap-very-high"></div>
             </div>
-            <span class="text-sm text-muted-foreground">High</span>
+            <span>More</span>
           </div>
-          <div class="text-xs text-muted-foreground">
-            Best time: Tue-Thu, 10-11 AM
-          </div>
-        </div>
-
-        <!-- Insights -->
-        <div class="mt-4 grid grid-cols-2 gap-3">
-          <div class="p-3 bg-green-50 dark:bg-green-950/20 rounded-lg text-sm">
-            <div class="font-medium text-green-700 dark:text-green-400 mb-1">Peak Engagement</div>
-            <div class="text-green-600">Tuesday 10-11 AM (82.4%)</div>
-          </div>
-          <div class="p-3 bg-red-50 dark:bg-red-950/20 rounded-lg text-sm">
-            <div class="font-medium text-red-700 dark:text-red-400 mb-1">Low Engagement</div>
-            <div class="text-red-600">Sunday 1-3 AM (12.3%)</div>
+          <div class="text-xs text-gray-500">
+            Peak: Tuesday 10 AM (68.5%)
           </div>
         </div>
-      </mat-card-content>
-    </mat-card>
+      </ng-template>
+    </p-card>
   `,
   styles: [`
     .text-pink-500 {
       color: #ec4899;
     }
-    .text-muted-foreground {
-      color: hsl(var(--muted-foreground));
+    .text-gray-500 {
+      color: #6b7280;
     }
+    .heatmap-cell {
+      aspect-ratio: 1 / 1;
+      border-radius: 0.25rem;
+      text-xs: true;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      transform: scale(1);
+    }
+    .heatmap-cell:hover {
+      transform: scale(1.1);
+    }
+    .heatmap-low { background-color: #f3f4f6; } /* Light Gray */
+    .heatmap-medium { background-color: #fef08a; } /* Light Yellow */
+    .heatmap-high { background-color: #fdba74; } /* Light Orange */
+    .heatmap-very-high { background-color: #f87171; } /* Light Red */
+    .heatmap-extreme { background-color: #ef4444; } /* Red */
   `]
 })
 export class HeatmapSectionComponent {
   days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
-  hours = Array.from({ length: 24 }, (_, i) => i);
-  
-  // Sample engagement data (0-100)
+  hours = ['12AM', '1AM', '2AM', '3AM', '4AM', '5AM', '6AM', '7AM', '8AM', '9AM', '10AM', '11AM', '12PM', '1PM', '2PM', '3PM', '4PM', '5PM', '6PM', '7PM', '8PM', '9PM', '10PM', '11PM'];
+  selectedView = 'engagement';
+
+  viewOptions = [
+    { label: 'Engagement', value: 'engagement' },
+    { label: 'Volume', value: 'volume' },
+    { label: 'Cost', value: 'cost' }
+  ];
+
+  // Mock engagement data (0-100) for sample
   private heatmapData: Record<string, Record<number, number>> = {
     'Mon': { 0: 15, 1: 12, 2: 8, 3: 10, 4: 18, 5: 25, 6: 35, 7: 45, 8: 58, 9: 72, 10: 78, 11: 75, 12: 68, 13: 62, 14: 58, 15: 55, 16: 52, 17: 48, 18: 42, 19: 38, 20: 32, 21: 28, 22: 22, 23: 18 },
     'Tue': { 0: 12, 1: 8, 2: 6, 3: 8, 4: 15, 5: 22, 6: 38, 7: 52, 8: 68, 9: 78, 10: 84, 11: 82, 12: 75, 13: 68, 14: 62, 15: 58, 16: 55, 17: 52, 18: 45, 19: 38, 20: 32, 21: 25, 22: 18, 23: 15 },
@@ -136,8 +136,8 @@ export class HeatmapSectionComponent {
   }
 
   formatHour(hour: number): string {
-    if (hour === 0) return '12 AM';
-    if (hour === 12) return '12 PM';
+    if (hour === 0) return '12AM';
+    if (hour === 12) return '12PM';
     if (hour < 12) return `${hour} AM`;
     return `${hour - 12} PM`;
   }
@@ -166,106 +166,21 @@ export class HeatmapSectionComponent {
     const value = this.heatmapData[day]?.[hour] || 0;
     return `${day} ${this.formatHour(hour)}: ${value}% engagement`;
   }
+
+  getHeatmapClass(hour: string, day: string): string {
+    const hourNum = parseInt(hour); // Convert hour string to number for data lookup
+    const value = this.heatmapData[day]?.[hourNum] || 0;
+    
+    if (value >= 80) return 'heatmap-extreme';
+    if (value >= 60) return 'heatmap-very-high';
+    if (value >= 40) return 'heatmap-high';  
+    if (value >= 20) return 'heatmap-medium';
+    return 'heatmap-low';
+  }
+
+  getTooltipText(hour: string, day: string): string {
+    const hourNum = parseInt(hour); // Convert hour string to number for data lookup
+    const value = this.heatmapData[day]?.[hourNum] || 0;
+    return `${day} ${hour}: ${(value).toFixed(1)}% engagement`;
+  }
 }
-import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatIconModule } from '@angular/material/icon';
-
-@Component({
-  selector: 'app-heatmap-section',
-  standalone: true,
-  imports: [CommonModule, MatCardModule, MatIconModule],
-  template: `
-    <mat-card class="h-full">
-      <mat-card-header class="pb-3">
-        <mat-card-title class="flex items-center gap-2">
-          <mat-icon class="text-orange-500">whatshot</mat-icon>
-          Peak Engagement Heatmap
-        </mat-card-title>
-      </mat-card-header>
-      <mat-card-content>
-        <div class="grid gap-4 mb-4">
-          <div class="grid grid-cols-2 gap-4">
-            <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <h4 class="font-semibold">WhatsApp</h4>
-              <div class="text-2xl font-bold text-blue-600">68.5%</div>
-              <div class="text-sm text-muted-foreground">Peak: Tue at 10 AM</div>
-            </div>
-            <div class="p-3 bg-gray-50 dark:bg-gray-800 rounded-lg">
-              <h4 class="font-semibold">SMS</h4>
-              <div class="text-2xl font-bold text-green-600">54.2%</div>
-              <div class="text-sm text-muted-foreground">Peak: Wed at 11 AM</div>
-            </div>
-          </div>
-        </div>
-        
-        <h4 class="font-semibold mb-3">Engagement Heatmap by Time</h4>
-        <div class="space-y-2">
-          <div class="flex items-center justify-between text-sm">
-            <span class="w-12">12AM</span>
-            <span class="w-12">6AM</span>
-            <span class="w-12">12PM</span>
-            <span class="w-12">6PM</span>
-          </div>
-          <div class="space-y-1">
-            <div class="flex items-center gap-2">
-              <span class="w-8 text-sm">Sun</span>
-              <div class="flex-1 h-6 bg-gradient-to-r from-yellow-200 via-orange-300 to-orange-400 rounded"></div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="w-8 text-sm">Mon</span>
-              <div class="flex-1 h-6 bg-gradient-to-r from-yellow-200 via-orange-400 to-red-400 rounded"></div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="w-8 text-sm">Tue</span>
-              <div class="flex-1 h-6 bg-gradient-to-r from-yellow-200 via-orange-400 to-red-500 rounded"></div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="w-8 text-sm">Wed</span>
-              <div class="flex-1 h-6 bg-gradient-to-r from-yellow-200 via-orange-400 to-red-400 rounded"></div>
-            </div>
-            <div class="flex items-center gap-2">
-              <span class="w-8 text-sm">Thu</span>
-              <div class="flex-1 h-6 bg-gradient-to-r from-yellow-200 via-orange-300 to-orange-400 rounded"></div>
-            </div>
-          </div>
-          <div class="flex items-center justify-between text-xs mt-2">
-            <span class="flex items-center gap-1">
-              <div class="w-3 h-3 bg-yellow-200 rounded"></div>
-              Low
-            </span>
-            <span class="flex items-center gap-1">
-              <div class="w-3 h-3 bg-orange-400 rounded"></div>
-              Med
-            </span>
-            <span class="flex items-center gap-1">
-              <div class="w-3 h-3 bg-red-500 rounded"></div>
-              High
-            </span>
-          </div>
-        </div>
-
-        <div class="mt-4 p-3 bg-blue-50 dark:bg-blue-950/20 rounded-lg">
-          <div class="flex items-center gap-2 text-sm">
-            <mat-icon class="text-blue-500 text-sm">info</mat-icon>
-            <span class="font-medium">Optimal Timing</span>
-          </div>
-          <div class="text-sm mt-1">
-            <span class="text-blue-600">Best:</span> Tue Thu 10-11 AM show 35% higher engage
-            <br>
-            <span class="text-red-600">Avoid:</span> 8-10 PM show 60% lower conversion rates
-          </div>
-        </div>
-      </mat-card-content>
-    </mat-card>
-  `,
-  styles: [`
-    .text-orange-500 { color: #f97316; }
-    .text-blue-500 { color: #3b82f6; }
-    .text-blue-600 { color: #2563eb; }
-    .text-green-600 { color: #059669; }
-    .text-red-600 { color: #dc2626; }
-  `]
-})
-export class HeatmapSectionComponent {}
